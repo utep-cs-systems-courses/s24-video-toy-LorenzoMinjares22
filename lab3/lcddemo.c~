@@ -74,7 +74,7 @@ void drawFlag() {
 
 
 
-int main() {
+void drawWaterBottle() {
 
   // Initialize LCD
 
@@ -88,8 +88,8 @@ int main() {
 
   clearScreen(BLACK);
 
-  drawString5x7(20,20, "fuck", COLOR_WHITE, COLOR_RED);
-  drawString8x12(50,50, "off", COLOR_GREEN, COLOR_RED);
+  drawString5x7(20,20, "Hello Im thirsty", COLOR_GREEN, COLOR_RED);
+  drawString8x12(50,50, "Can I have some water?   UWU ", COLOR_GREEN, COLOR_RED);
 
   // Draw the pyramid
 

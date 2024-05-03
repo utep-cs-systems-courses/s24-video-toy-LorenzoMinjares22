@@ -60,6 +60,25 @@ void drawChar5x7(u_char col, u_char row, char c,
  */
 void drawRectOutline(u_char colMin, u_char rowMin, u_char width, u_char height,
 		     u_int colorBGR);
+
+
+// Draw a single brick at the specified position
+void drawBrick(u_char col, u_char row);
+
+
+// Draw the pyramid with the specified height
+void drawPyramid();
+
+
+// Draw the flag on top of the pyramid
+void drawFlag() ;
+
+
+  // usses drawBrick draw pyramid and drawflag to create a water bootle top
+
+void drawWaterBottle();
+
+  
 #endif // included
 
 

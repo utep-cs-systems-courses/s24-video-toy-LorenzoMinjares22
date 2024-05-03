@@ -1,25 +1,34 @@
-# makfile configuration
-COMMON_OBJECTS  = 
-CPU             = msp430g2553
-CFLAGS          = -mmcu=${CPU} -I../h -L/opt/ti/msp430_gcc/include
+all: libLcd.a lcddemo.elf
 
+CPU             = msp430g2553
+CFLAGS          = -mmcu=${CPU} -Os -I../h 
+LDFLAGS 	= -L/opt/ti/msp430_gcc/include -L../lib 
 #switch the compiler (for the internal make rules)
 CC              = msp430-elf-gcc
 AS              = msp430-elf-as
+AR              = msp430-elf-ar
 
-all: buzzer.elf 
+libLcd.a: font-11x16.o font-5x7.o font-8x12.o lcdutils.o lcddraw.o lcddemo.o buzzer.o main.o lcddemo.o
+	$(AR) crs $@ $^
 
-#additional rules for files
-buzzer.elf: ${COMMON_OBJECTS} buzzer.o buzzerMain.o ../lib/libTimer.a
-	${CC} ${CFLAGS} -o $@ $^
+lcddraw.o: lcddraw.c lcddraw.h lcdutils.h
+lcdutils.o: lcdutils.c lcdutils.h
+main.o: main.c led.h libTimer.h
+lcddemo.o: lcddemo.c lcddraw.h
+wdInterrruptHandler.o: led.h libTimer.h
 
-load: buzzer.elf
-	msp430loader.sh  $^
+install: libLcd.a
+	mkdir -p ../h ../lib
+	mv $^ ../lib
+	cp *.h ../h
 
-clean: $^
-	rm -f *.o *.elf
+clean:
+	rm -f libLcd.a *.o *.elf
 
-buzzer.c: buzzer.h
-buzzerMain.c: buzzer.h
+lcddemo.elf: libLcd.a 
+	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@ $^ ../lib/libTimer.a 
+
+load: lcddemo.elf
+	msp430loader.sh $^
 
 
